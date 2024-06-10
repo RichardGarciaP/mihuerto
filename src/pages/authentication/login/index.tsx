@@ -15,9 +15,11 @@ import { UserContext } from "../../../../helper/User";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import layoutContext from "helper/Layout";
 
 const Login = () => {
   const { login } = useContext(UserContext);
+  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
   const router = useRouter();
 
   const [showPassWord, setShowPassWord] = useState(false);
@@ -36,10 +38,12 @@ const Login = () => {
   const formSubmitHandle = async (event: FormEvent) => {
     event.preventDefault();
     setLoading(true);
+    showLoadingModal();
     postLogin({ username, password }).then((response) => {
       const userData = response?.data?.user;
       const token = response?.data?.token;
       setLoading(false);
+      hideLoadingModal()
 
       if (response.status === "error") {
         setError(response.message);

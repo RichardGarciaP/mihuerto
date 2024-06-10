@@ -13,6 +13,9 @@ interface layoutProvider {
   setSearchableMenu:Function,
   bookmarkList:searchableMenuType[],
   setBookmarkList:Function
+  isLoading: boolean,
+  showLoadingModal: () => void,
+  hideLoadingModal: () => void
 }
 export interface searchableMenuType {
   icon: ReactNode;
@@ -32,6 +35,9 @@ const layoutContext = createContext<layoutProvider>({
   setSearchIcon: () => {},
   bookMarkClass: false,
   setBookMarkClass: () => {},
+  isLoading: false,
+  showLoadingModal: () => {},
+  hideLoadingModal: () => {}
 });
 
 export default layoutContext;

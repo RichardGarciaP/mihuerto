@@ -23,6 +23,7 @@ const Layout = ({ children }: layoutProps) => {
     setSideBarToggle,
     setSearchableMenu,
     setBookmarkList,
+    isLoading,
   } = useContext(layoutContext);
 
   const compactSidebar = () => {
@@ -107,6 +108,9 @@ const Layout = ({ children }: layoutProps) => {
         </div>
       </div>
       <Taptop />
+      {isLoading ? <div className="hola" style={{ position: 'absolute', width: "100vw", height: "100vh", zIndex: 9999, background: 'white', top: 0, display:'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <span className="loading-loader"></span>
+      </div> : null}
     </NoSsr>
   );
 };

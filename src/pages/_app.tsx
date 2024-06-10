@@ -14,6 +14,9 @@ import TodoListProvider from "helper/TodoList/TodoListProvider";
 import ContactProvider from "helper/Contacts/ContactProvider";
 import NoSsr from "utils/NoSsr";
 import UserProvider from "../../helper/User/UserProvider";
+import { useContext } from "react";
+import layoutContext from "helper/Layout";
+import LoadingModal from "@/components/LoadingModal/LoadingModal";
 
 const Myapp = ({ Component, pageProps }: any) => {
   const getLayout =
@@ -28,16 +31,20 @@ const Myapp = ({ Component, pageProps }: any) => {
     updatedPath = currentUrl;
   }
 
+  const {
+    isLoading
+  } = useContext(layoutContext);
+
   return (
     <NoSsr>
       {withoutLayoutThemePath.includes(updatedPath) ? (
         <Component {...pageProps} />
       ) : (
-        <UserProvider>
-          <CustomizerProvider>
-            <TodoListProvider>
-              <ProjectProvider>
-                <LayoutProvider>
+        <LayoutProvider>
+          <UserProvider>
+            <CustomizerProvider>
+              <TodoListProvider>
+                <ProjectProvider>
                   <TaskProvider>
                     <BookmarkProvider>
                       <ContactProvider>
@@ -45,13 +52,14 @@ const Myapp = ({ Component, pageProps }: any) => {
                       </ContactProvider>
                     </BookmarkProvider>
                   </TaskProvider>
-                </LayoutProvider>
-              </ProjectProvider>
-            </TodoListProvider>
-          </CustomizerProvider>
-        </UserProvider>
+                </ProjectProvider>
+              </TodoListProvider>
+            </CustomizerProvider>
+          </UserProvider>
+        </LayoutProvider>
       )}
       <ToastContainer />
+      {isLoading ? <LoadingModal/> : null}
     </NoSsr>
   );
 };

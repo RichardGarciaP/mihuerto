@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useContext } from "react";
 import CardHead from "CommonElements/CardHead";
 import { Card, CardBody, FormFeedback, FormGroup } from "reactstrap";
 import {
@@ -26,6 +26,7 @@ import useSWR from "swr";
 import { getActiveRoles } from "../../../helper/api/role";
 import { IRol } from "../../../Types/IRol";
 import { PARISHES } from "../../../utils/constants";
+import layoutContext from "helper/Layout";
 
 interface UserFormProps {
   onSubmit: (data: UserProps, formikHelpers: FormikHelpers<UserProps>) => void;
@@ -42,7 +43,14 @@ const UserForm = ({
   action = "create",
   disabled = false,
 }: UserFormProps) => {
-  const roles = useSWR(`/getRolesActives`, () => getActiveRoles());
+  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
+
+  const roles = useSWR(`/getRolesActives`, () => {
+    showLoadingModal()
+    const activeRoles = getActiveRoles()
+    hideLoadingModal()
+    return activeRoles
+  });
 
   const validations = Yup.object().shape({
     name: Yup.string()

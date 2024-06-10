@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { Badge, Container } from "reactstrap";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ import RoleForm from "@/components/Role/RoleForm";
 import { createUser, getUsersPortal } from "../../../../helper/api/users";
 import { toast } from "react-toastify";
 import { getAllCategory } from "../../../../helper/api/categories";
+import layoutContext from "helper/Layout";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +35,15 @@ const Index = () => {
     description: "",
   });
 
+  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
+
   const categories = useSWR([`/getAllCategory`, page, rowPerPage], () =>
-    getAllCategory(page, rowPerPage),
+    {
+      showLoadingModal();
+      const allCategories = getAllCategory(page, rowPerPage)
+      hideLoadingModal()
+      return allCategories
+    }
   );
 
   const columns = [
