@@ -147,7 +147,7 @@ const Index = () => {
         setSubmitting(false);
         mutate("/getAllCategory");
         mutate(`/getOneCategory/${data._id}`);
-        setIsOpen(false);
+        setIsOpenEdit(false);
         resetForm();
         return;
       }
