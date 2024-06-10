@@ -43,8 +43,6 @@ const EditUser = () => {
     setSubmitting(false);
   };
 
-  console.log(user?.data?.data);
-
   if (!user?.data?.data) return null;
 
   return (

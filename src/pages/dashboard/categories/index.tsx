@@ -3,24 +3,27 @@ import Link from "next/link";
 import { Badge, Container } from "reactstrap";
 import { useRouter } from "next/router";
 import CustomTableData from "@/components/Table/CustomTableData/CustomTableData";
-import { IRol } from "../../../../Types/IRol";
-import { AddNewRole, Role } from "utils/Constant";
 import useSWR, { mutate } from "swr";
-import { createRole, getRoles, updateRole } from "../../../../helper/api/role";
 import { setQueryStringValue } from "../../../../utils/utils";
-import LargeModal from "@/components/Ui-kits/Modal/SizeModal/LargeModal";
 import FormModal from "@/components/FormModal";
 import { FormikHelpers } from "formik";
-import RoleForm from "@/components/Role/RoleForm";
-import { createUser, getUsersPortal } from "../../../../helper/api/users";
 import { toast } from "react-toastify";
-import { getAllCategory } from "../../../../helper/api/categories";
 import layoutContext from "helper/Layout";
+import {
+  createCategory,
+  getAllCategory,
+  getOneCategory,
+  updateCategory,
+} from "../../../../helper/api/categories";
+import { ICategory } from "../../../../Types/ICategory";
+import CategoryForm from "@/components/Category/CategoryForm";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [action, setAction] = useState("create");
   const [title, setTitle] = useState("Crear Rol");
+  const [userId, setUserId] = useState("");
   const router = useRouter();
 
   const page = router.query.page ? Number(router.query.page) : 1;
@@ -28,40 +31,43 @@ const Index = () => {
     ? Number(router.query.rowPerPage)
     : 10;
 
-  const [initData, setInitData] = useState<IRol>({
+  const [initData, setInitData] = useState<ICategory>({
     _id: "",
     active: false,
     name: "",
+    image: "",
     description: "",
   });
 
-  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
+  const { showLoadingModal, hideLoadingModal } = useContext(layoutContext);
 
-  const categories = useSWR([`/getAllCategory`, page, rowPerPage], () =>
-    {
-      showLoadingModal();
-      const allCategories = getAllCategory(page, rowPerPage)
-      hideLoadingModal()
-      return allCategories
-    }
+  const categories = useSWR([`/getAllCategory`, page, rowPerPage], () => {
+    showLoadingModal();
+    const allCategories = getAllCategory(page, rowPerPage);
+    hideLoadingModal();
+    return allCategories;
+  });
+
+  const category = useSWR(userId ? `/getOneCategory/${userId}` : null, () =>
+    getOneCategory(userId!.toString()),
   );
 
   const columns = [
     {
       name: "Nombre",
-      selector: (row: IRol) => `${row.name}`,
+      selector: (row: ICategory) => `${row.name}`,
       sortable: true,
       center: false,
     },
     {
       name: "Descripción",
-      selector: (row: IRol) => `${row.description}`,
+      selector: (row: ICategory) => `${row.description}`,
       sortable: true,
       center: false,
     },
     {
       name: "Estado",
-      cell: (row: IRol) =>
+      cell: (row: ICategory) =>
         row.active ? (
           <Badge color="success">Activo</Badge>
         ) : (
@@ -72,7 +78,7 @@ const Index = () => {
     },
     {
       name: "Acción",
-      cell: (row: IRol) => (
+      cell: (row: ICategory) => (
         <ul className="action">
           <li className="edit">
             <Link
@@ -91,31 +97,42 @@ const Index = () => {
 
   const handleOpenModal = (
     action: string,
-    title = "Crear Rol",
-    data: IRol = {
+    title = "Crear Categoria",
+    data: ICategory = {
       _id: "",
       active: true,
       name: "",
       description: "",
+      image: "",
     },
   ) => {
-    setIsOpen(true);
-    setInitData(data);
+    setUserId(data!._id as string);
+    if (action === "create") {
+      setIsOpen(true);
+    } else {
+      setIsOpenEdit(true);
+    }
+    // setInitData(data);
     setAction(action);
     setTitle(title);
   };
 
   const onSubmit = async (
-    data: IRol,
-    { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<IRol>,
+    data: ICategory,
+    {
+      setErrors,
+      setStatus,
+      setSubmitting,
+      resetForm,
+    }: FormikHelpers<ICategory>,
   ) => {
     if (action === "create") {
-      const response = await createRole(data);
+      const response = await createCategory(data);
       if (response.status === "success") {
-        toast.success("Rol creado correctamente");
+        toast.success("Categoria creada correctamente");
         setStatus({ success: true });
         setSubmitting(false);
-        mutate("/getAllRoles");
+        mutate("/getAllCategory");
         setIsOpen(false);
         resetForm();
         return;
@@ -123,12 +140,13 @@ const Index = () => {
     }
 
     if (data._id) {
-      const response = await updateRole(data!._id, data);
+      const response = await updateCategory(data!._id, data);
       if (response.status === "success") {
-        toast.success("Rol actualizado correctamente");
+        toast.success("Categoria actualizada correctamente");
         setStatus({ success: true });
         setSubmitting(false);
-        mutate("/getAllRoles");
+        mutate("/getAllCategory");
+        mutate(`/getOneCategory/${data._id}`);
         setIsOpen(false);
         resetForm();
         return;
@@ -164,13 +182,23 @@ const Index = () => {
         />
 
         <FormModal isOpen={isOpen} setIsOpen={setIsOpen}>
-          <RoleForm
+          <CategoryForm
             onSubmit={onSubmit}
             title={title}
             data={initData}
             action={action}
           />
         </FormModal>
+        {category?.data?.data && (
+          <FormModal isOpen={isOpenEdit} setIsOpen={setIsOpenEdit}>
+            <CategoryForm
+              onSubmit={onSubmit}
+              title={title}
+              data={category?.data?.data}
+              action={action}
+            />
+          </FormModal>
+        )}
       </Container>
     </div>
   );
