@@ -2,9 +2,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const nextConfig = {
   env: {
-    // Comentarios para distinguir entre entornos
-    // API_URL: "https://cuba-nextjs.vercel.app/api", // Usar en producción
-    API_URL: "http://54.92.233.245:3005/v1/api", // Usar en desarrollo local
+    // Descomentar esta línea y comentar la otra para producción
+    // API_URL: "https://cuba-nextjs.vercel.app/api",
+    // Comentar esta línea y descomentar la otra para desarrollo local
+    API_URL: "http://54.92.233.245:3005/v1/api",
   },
   redirects: async () => {
     return [
@@ -15,9 +16,9 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: process.env.API_URL + '/:path*'
+        destination: `http://54.92.233.245:3005/v1/api/:path*`,
       }
-    ]
+    ];
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
