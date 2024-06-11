@@ -24,6 +24,7 @@ const Myapp = ({ Component, pageProps }: any) => {
   const currentUrl = router.asPath;
   let updatedPath;
   if (currentUrl.includes("?")) {
+
     const tempt = currentUrl;
     updatedPath = tempt.split("?")[0];
   } else {
