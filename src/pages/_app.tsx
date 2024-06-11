@@ -4,7 +4,6 @@ import { withoutLayoutThemePath } from "Data/OthersPageData";
 import { ToastContainer } from "react-toastify";
 import { ProjectProvider } from "helper/project/ProjectProvider";
 import "../../i18n";
-import { TaskProvider } from "helper/Task/TaskProvider";
 import "../../public/assets/scss/app.scss";
 import LayoutProvider from "helper/Layout/LayoutProvider";
 import Layout from "../layout";
@@ -45,13 +44,11 @@ const Myapp = ({ Component, pageProps }: any) => {
             <CustomizerProvider>
               <TodoListProvider>
                 <ProjectProvider>
-                  <TaskProvider>
                     <BookmarkProvider>
                       <ContactProvider>
                         {getLayout(<Component {...pageProps} />)}
                       </ContactProvider>
                     </BookmarkProvider>
-                  </TaskProvider>
                 </ProjectProvider>
               </TodoListProvider>
             </CustomizerProvider>
