@@ -493,6 +493,13 @@ table {
     }
 }
 
+.change-password {
+    text-decoration: underline;
+    cursor: pointer;
+    color: $primary-color;
+    font-weight: 600;
+}
+
 /**=====================
     1.2 Typography CSS Ends
 ==========================**/

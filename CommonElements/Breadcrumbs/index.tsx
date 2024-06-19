@@ -4,13 +4,14 @@ import Link from "next/link";
 import SvgIcon from "CommonElements/Icons/SvgIcon";
 
 type varTypes = {
-  title: string;
+  title?: string;
   mainTitle: string;
   parent?: string;
+  parentElement?: { title: string; url: string };
   subParent?: string;
 };
 
-const Breadcrumbs = ({ title, mainTitle, parent, subParent }: varTypes) => {
+const Breadcrumbs = ({ mainTitle, parentElement, subParent }: varTypes) => {
   return (
     <div>
       <Container fluid={true}>
@@ -22,11 +23,15 @@ const Breadcrumbs = ({ title, mainTitle, parent, subParent }: varTypes) => {
             <Col xs={6} className="p-0">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <Link href={`/dashboard/default`}>
+                  <Link href={`/dashboard/home`}>
                     <SvgIcon iconId="stroke-home" />
                   </Link>
                 </li>
-                <li className="breadcrumb-item">{parent}</li>
+                {parentElement && (
+                  <Link href={parentElement?.url} className="breadcrumb-item">
+                    {parentElement?.title}
+                  </Link>
+                )}
                 {subParent ? (
                   <li className="breadcrumb-item">{subParent}</li>
                 ) : (

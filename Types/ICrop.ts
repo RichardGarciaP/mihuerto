@@ -11,11 +11,15 @@ export interface ICrop {
   germinationTime: number;
   harvestTime: number;
   sowingSeason: string;
-  SolarLight: string;
+  solarLight: string;
   plantedAtHome: boolean;
   plotSize: number;
   thermalFloor: string;
   typeOfSoil: string;
+  transplantSoil: string;
+  temperatureMax: number;
+  temperatureMin: number;
+
   fertilisersId: FertilisersID[];
   harmfulNeighboursId: HarmfulNeighboursID[];
   reproductionsId: ReproductionsID[];
@@ -23,21 +27,26 @@ export interface ICrop {
 }
 
 export interface BeneficalNeighboursID {
+  _id?: string;
   beneficalNeighbourId: string;
 }
 
 export interface FertilisersID {
+  _id?: string;
   fertiliserId: string;
 }
 
 export interface HarmfulNeighboursID {
+  _id?: string;
   harmfulNeighbourId: string;
 }
 
 export interface PlaguesID {
+  _id?: string;
   plagueId: string;
 }
 
 export interface ReproductionsID {
+  _id?: string;
   reproductionId: string;
 }

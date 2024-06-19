@@ -16,6 +16,11 @@ const FormModal = ({ isOpen, setIsOpen, children }: FormModalProps) => {
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
   const ModalData = {
     isOpen: isOpen,
     header: false,
@@ -23,6 +28,7 @@ const FormModal = ({ isOpen, setIsOpen, children }: FormModalProps) => {
     toggler: toggle,
     title: "Large modal",
     size: "fullscreen",
+    onClose: onClose,
   };
   return (
     <CommonModal modalData={ModalData}>

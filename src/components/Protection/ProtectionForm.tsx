@@ -7,25 +7,29 @@ import { ErrorMessage, Field, Formik, FormikHelpers } from "formik";
 import { ICategory } from "../../../Types/ICategory";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
+import { IProtection } from "../../../Types/IProtection";
 import { validIfIsBase64 } from "../../../utils/utils";
 
-interface CategoryFormProps {
-  onSubmit: (data: ICategory, formikHelpers: FormikHelpers<ICategory>) => void;
-  data?: ICategory;
+interface ProtectionFormProps {
+  onSubmit: (
+    data: IProtection,
+    formikHelpers: FormikHelpers<IProtection>,
+  ) => void;
+  data?: IProtection;
   title: string;
   action?: string;
 }
 
-const CategoryForm = ({
+const ProtectionForm = ({
   onSubmit,
   data,
   title,
   action = "create",
-}: CategoryFormProps) => {
+}: ProtectionFormProps) => {
   const validations = Yup.object().shape({
     name: Yup.string()
-      .min(3, "El rol debe tener minimo 3 caracteres")
-      .required("El rol es requerido"),
+      .min(3, "El nombre debe tener minimo 3 caracteres")
+      .required("El nombre es requerido"),
     description: Yup.string()
       .min(3, "La descripción debe tener minimo 3 caracteres")
       .required("La descripción es requerida"),
@@ -63,7 +67,6 @@ const CategoryForm = ({
               : {
                   name: "",
                   description: "",
-                  active: true,
                   image: "",
                   submit: undefined,
                 }
@@ -83,11 +86,11 @@ const CategoryForm = ({
             return (
               <form noValidate onSubmit={handleSubmit} className={`row g-3`}>
                 <Col xs={6}>
-                  <Label for="name">Categoria</Label>
+                  <Label for="name">Nombre</Label>
                   <Field
                     name="name"
                     as={Input}
-                    placeholder="Categoria..."
+                    placeholder="Nombre..."
                     invalid={touched.name && !!errors.name}
                   />
                   <ErrorMessage name="name" component={FormFeedback} />
@@ -137,26 +140,15 @@ const CategoryForm = ({
                   </div>
                   <ErrorMessage name="image" component={FormFeedback} />
                 </Col>
-                <Col xs={6}>
-                  <Label>Estado</Label>
-                  <FormGroup check>
-                    <Field
-                      id="active"
-                      name="active"
-                      as={Input}
-                      type="checkbox"
-                    />{" "}
-                    &nbsp;
-                    <Label for="active" className="form-check-label">
-                      Esta activo
-                    </Label>
-                  </FormGroup>
-                </Col>
-
-                <Col xs={12} className="gap-2">
+                <Col xs={12}>
                   <Button color="primary" type="submit" disabled={isSubmitting}>
                     {SubmitForm}
                   </Button>
+                </Col>
+
+                <Col xs={12}>
+                  <p>{action}</p>
+                  {/*<p>{JSON.stringify(props, null, 2)}</p>*/}
                 </Col>
               </form>
             );
@@ -167,4 +159,4 @@ const CategoryForm = ({
   );
 };
 
-export default CategoryForm;
+export default ProtectionForm;

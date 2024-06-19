@@ -1,89 +1,69 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Badge, Container } from "reactstrap";
+import { Container } from "reactstrap";
 import { useRouter } from "next/router";
 import CustomTableData from "@/components/Table/CustomTableData/CustomTableData";
 import useSWR, { mutate } from "swr";
-import { setQueryStringValue } from "../../../../utils/utils";
-import FormModal from "@/components/FormModal";
+import { setQueryStringValue, textEllipsis } from "../../../../utils/utils";
 import { FormikHelpers } from "formik";
 import { toast } from "react-toastify";
-import layoutContext from "helper/Layout";
+import ProtectionForm from "@/components/Protection/ProtectionForm";
+import FormModal from "@/components/FormModal";
+import { IProtection } from "../../../../Types/IProtection";
+import { updatePlague } from "../../../../helper/api/plague";
 import {
-  createCategory,
-  getAllCategory,
-  getOneCategory,
-  updateCategory,
-} from "../../../../helper/api/categories";
-import { ICategory } from "../../../../Types/ICategory";
-import CategoryForm from "@/components/Category/CategoryForm";
+  createReproduction,
+  editReproduction,
+  getAllReproductions,
+  getOneReproduction,
+} from "../../../../helper/api/reproduction";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+
   const [action, setAction] = useState("create");
-  const [title, setTitle] = useState("Crear Rol");
-  const [userId, setUserId] = useState("");
+  const [title, setTitle] = useState("Crear plaga");
   const router = useRouter();
+  const [id, setId] = useState("");
 
   const page = router.query.page ? Number(router.query.page) : 1;
   const rowPerPage = router.query.rowPerPage
     ? Number(router.query.rowPerPage)
     : 10;
 
-  const [initData, setInitData] = useState<ICategory>({
-    _id: "",
-    active: false,
-    name: "",
-    image: "",
-    description: "",
-  });
+  const reproductions = useSWR([`/getAllReproductions`, page, rowPerPage], () =>
+    getAllReproductions(page, rowPerPage),
+  );
 
-  const { showLoadingModal, hideLoadingModal } = useContext(layoutContext);
-
-  const categories = useSWR([`/getAllCategory`, page, rowPerPage], () => {
-    showLoadingModal();
-    const allCategories = getAllCategory(page, rowPerPage);
-    hideLoadingModal();
-    return allCategories;
-  });
-
-  const category = useSWR(userId ? `/getOneCategory/${userId}` : null, () =>
-    getOneCategory(userId!.toString()),
+  const selectedReproduction = useSWR(
+    id ? `/getOneReproduction/${id}` : null,
+    () => getOneReproduction(id!.toString()),
   );
 
   const columns = [
     {
-      name: "Nombre",
-      selector: (row: ICategory) => `${row.name}`,
+      name: "Metodo de reproducción",
+      selector: (row: IProtection) => `${row.name}`,
       sortable: true,
       center: false,
     },
     {
       name: "Descripción",
-      selector: (row: ICategory) => `${row.description}`,
-      sortable: true,
-      center: false,
-    },
-    {
-      name: "Estado",
-      cell: (row: ICategory) =>
-        row.active ? (
-          <Badge color="success">Activo</Badge>
-        ) : (
-          <Badge color="danger">Desactivado</Badge>
-        ),
+      selector: (row: IProtection) => `${textEllipsis(row.description, 50)}`,
       sortable: true,
       center: false,
     },
     {
       name: "Acción",
-      cell: (row: ICategory) => (
+      cell: (row: IProtection) => (
         <ul className="action">
           <li className="edit">
             <Link
               href="#"
-              onClick={() => handleOpenModal("edit", "Editar Rol", row)}
+              onClick={() =>
+                handleOpenModal("edit", "Editar método de reproducción", row)
+              }
             >
               <i className="icon-pencil-alt" />
             </Link>
@@ -97,42 +77,39 @@ const Index = () => {
 
   const handleOpenModal = (
     action: string,
-    title = "Crear Categoria",
-    data: ICategory = {
+    title = "Crear método de reproducción",
+    data: IProtection = {
       _id: "",
-      active: true,
       name: "",
       description: "",
       image: "",
     },
   ) => {
-    setUserId(data!._id as string);
+    setId(data!._id as string);
     if (action === "create") {
       setIsOpen(true);
     } else {
       setIsOpenEdit(true);
     }
-    // setInitData(data);
     setAction(action);
     setTitle(title);
   };
-
   const onSubmit = async (
-    data: ICategory,
+    data: IProtection,
     {
       setErrors,
       setStatus,
       setSubmitting,
       resetForm,
-    }: FormikHelpers<ICategory>,
+    }: FormikHelpers<IProtection>,
   ) => {
     if (action === "create") {
-      const response = await createCategory(data);
+      const response = await createReproduction(data);
       if (response.status === "success") {
-        toast.success("Categoria creada correctamente");
+        toast.success("Método de reproducción creado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
-        mutate("/getAllCategory");
+        mutate("/getAllReproductions");
         setIsOpen(false);
         resetForm();
         return;
@@ -140,13 +117,13 @@ const Index = () => {
     }
 
     if (data._id) {
-      const response = await updateCategory(data!._id, data);
+      const response = await editReproduction(data!._id, data);
       if (response.status === "success") {
-        toast.success("Categoria actualizada correctamente");
+        toast.success("Método de reproducción actualizado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
-        mutate([`/getAllCategory`, page, rowPerPage]);
-        mutate(`/getOneCategory/${data._id}`);
+        mutate("/getAllReproductions");
+        mutate(`/getOneReproduction/${data._id}`);
         setIsOpenEdit(false);
         resetForm();
         return;
@@ -155,24 +132,24 @@ const Index = () => {
 
     setStatus({ success: true });
     setSubmitting(false);
-    // resetForm();
+    resetForm();
   };
 
-  if (!categories?.data?.data?.data) return null;
+  if (!reproductions?.data?.data?.data) return null;
 
   return (
     <div className="page-body">
       <Container fluid={true}>
         <CustomTableData
-          title={"Categorias"}
+          title={"Método de reproducción"}
           button={{
-            title: "Añadir categoria",
+            title: "Añadir método de reproducción",
             onClick: () => {
               handleOpenModal("create");
             },
           }}
           columns={columns}
-          data={categories.data.data.data}
+          data={reproductions.data.data.data}
           onChangePage={(page, totalRows) => {
             setQueryStringValue("page", page, router);
           }}
@@ -182,19 +159,14 @@ const Index = () => {
         />
 
         <FormModal isOpen={isOpen} setIsOpen={setIsOpen}>
-          <CategoryForm
-            onSubmit={onSubmit}
-            title={title}
-            data={initData}
-            action={action}
-          />
+          <ProtectionForm onSubmit={onSubmit} title={title} action={action} />
         </FormModal>
-        {category?.data?.data && (
+        {selectedReproduction?.data?.data && (
           <FormModal isOpen={isOpenEdit} setIsOpen={setIsOpenEdit}>
-            <CategoryForm
+            <ProtectionForm
               onSubmit={onSubmit}
               title={title}
-              data={category?.data?.data}
+              data={selectedReproduction?.data?.data}
               action={action}
             />
           </FormModal>

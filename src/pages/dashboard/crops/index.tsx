@@ -3,26 +3,18 @@ import Link from "next/link";
 import { Badge, Container } from "reactstrap";
 import { useRouter } from "next/router";
 import CustomTableData from "@/components/Table/CustomTableData/CustomTableData";
-import { IRol } from "../../../../Types/IRol";
 import useSWR, { mutate } from "swr";
-import { createRole, getRoles, updateRole } from "../../../../helper/api/role";
 import { setQueryStringValue, textEllipsis } from "../../../../utils/utils";
-import FormModal from "@/components/FormModal";
 import { FormikHelpers } from "formik";
 import { toast } from "react-toastify";
-import {
-  createCategory,
-  getAllCategory,
-  updateCategory,
-} from "../../../../helper/api/categories";
 import { ICategory } from "../../../../Types/ICategory";
-import CategoryForm from "@/components/Category/CategoryForm";
 import {
   createCultivation,
   getAllCultivation,
   updateCultivation,
 } from "../../../../helper/api/crops";
 import { ICrop } from "../../../../Types/ICrop";
+import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,10 +92,7 @@ const Index = () => {
       cell: (row: ICrop) => (
         <ul className="action">
           <li className="edit">
-            <Link
-              href="#"
-              onClick={() => handleOpenModal("edit", "Editar Rol", row)}
-            >
+            <Link href={`/dashboard/crops/${row._id}`}>
               <i className="icon-pencil-alt" />
             </Link>
           </li>
@@ -130,7 +119,7 @@ const Index = () => {
       germinationTime: 0,
       harvestTime: 0,
       sowingSeason: "",
-      SolarLight: "",
+      solarLight: "",
       plantedAtHome: false,
       plotSize: 0,
       thermalFloor: "",
@@ -138,6 +127,9 @@ const Index = () => {
       fertilisersId: [],
       harmfulNeighboursId: [],
       reproductionsId: [],
+      temperatureMax: 0,
+      temperatureMin: 0,
+      transplantSoil: "",
     },
   ) => {
     setIsOpen(true);
@@ -189,9 +181,9 @@ const Index = () => {
         <CustomTableData
           title={"Cultivos"}
           button={{
-            title: "Añadir cultivo",
+            title: "Añadir Cultivo",
             onClick: () => {
-              handleOpenModal("create");
+              router.push("/dashboard/crops/new");
             },
           }}
           columns={columns}

@@ -1,6 +1,6 @@
 import { getFetcher, patchFetcher, postFetcher } from "../api";
 import { getToken } from "../../utils/utils";
-import { IRol } from "../../Types/IRol";
+import { IProtection } from "../../Types/IProtection";
 
 export const getAllFertiliser = (page: number = 1, rowPerPage: number = 10) => {
   return getFetcher(
@@ -10,15 +10,15 @@ export const getAllFertiliser = (page: number = 1, rowPerPage: number = 10) => {
   );
 };
 
-export const getActiveRoles = () => {
-  return getFetcher(`/role/getRolesActives`, false, getToken());
+export const getOneFertiliser = (id: string) => {
+  return getFetcher(`/fertiliser/getOneFertiliser?id=${id}`, false, getToken());
 };
 
-export const createRole = (data: IRol) => {
+export const createFertiliser = (data: IProtection) => {
   delete data._id;
-  return postFetcher(`/role/createRole`, data, getToken());
+  return postFetcher(`/fertiliser/createFertiliser`, data, getToken());
 };
 
-export const updateRole = (id: string, data: IRol) => {
-  return patchFetcher(`/role/editRole?id=${id}`, data, getToken());
+export const updateFertiliser = (id: string, data: IProtection) => {
+  return patchFetcher(`/fertiliser/editFertiliser?id=${id}`, data, getToken());
 };

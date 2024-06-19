@@ -72,6 +72,11 @@ export const MenuList: sidebarMenuType[] = [
             title: "Fertilizantes",
             type: "link",
           },
+          {
+            path: "/dashboard/reproduction",
+            title: "Metodos de reproducción",
+            type: "link",
+          },
         ],
       },
       {

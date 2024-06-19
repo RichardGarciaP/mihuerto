@@ -4,21 +4,25 @@ import { Card, CardBody, Col, Input, Label } from "reactstrap";
 import TableHeader from "@/components/Headers/TableHeader/TableHeader";
 import { useRouter } from "next/router";
 import { setQueryStringValue } from "../../../../utils/utils";
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 type CustomTableProps = {
-  title: string;
+  title?: string;
   button?: {
     title: string;
     onClick: () => void;
   };
   data: any[];
   columns: any[];
+  hasPadding?: boolean;
 } & TableProps<any>;
 const CustomTableData = ({
   title,
   button,
   data,
   columns,
+  subHeader = true,
+  hasPadding = true,
   ...otherProps
 }: CustomTableProps) => {
   const router = useRouter();
@@ -46,27 +50,39 @@ const CustomTableData = ({
       </div>
     );
   }, [filterText]);
+
+  const renderBody = () => {
+    return (
+      <>
+        <TableHeader
+          headingClassName="pb-0 card-no-border"
+          Heading={title}
+          button={button}
+        />
+
+        <div className="table-responsive">
+          <DataTable
+            columns={columns}
+            data={filteredItems}
+            pagination
+            subHeader={subHeader}
+            subHeaderComponent={subHeaderComponentMemo}
+            persistTableHead
+            {...otherProps}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
     <Col sm={12}>
       <Card className="main-zero-config">
-        <CardBody>
-          <TableHeader
-            headingClassName="pb-0 card-no-border"
-            Heading={title}
-            button={button}
-          />
-          <div className="table-responsive">
-            <DataTable
-              columns={columns}
-              data={filteredItems}
-              pagination
-              subHeader
-              subHeaderComponent={subHeaderComponentMemo}
-              persistTableHead
-              {...otherProps}
-            />
-          </div>
-        </CardBody>
+        {hasPadding ? (
+          <CardBody>{renderBody()}</CardBody>
+        ) : (
+          <div>{renderBody()}</div>
+        )}
       </Card>
     </Col>
   );

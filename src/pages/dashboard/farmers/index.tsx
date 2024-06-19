@@ -8,6 +8,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { getUsersApp, getUsersPortal } from "../../../../helper/api/users";
 import { setQueryStringValue } from "../../../../utils/utils";
+import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
 
 const Index = () => {
   const router = useRouter();
@@ -90,7 +91,7 @@ const Index = () => {
     <div className="page-body">
       <Container fluid={true}>
         <CustomTableData
-          title={"Huertitas"}
+          title={"Huertistas"}
           columns={columns}
           data={users.data.data}
           onChangePage={(page, totalRows) => {

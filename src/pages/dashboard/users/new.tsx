@@ -7,6 +7,7 @@ import { createUser } from "../../../../helper/api/users";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
+import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
 
 const NewUser = () => {
   const router = useRouter();
@@ -34,6 +35,11 @@ const NewUser = () => {
   };
   return (
     <div className="page-body">
+      <Breadcrumbs
+        mainTitle={"Users"}
+        parentElement={{ title: "Users", url: "/dashboard/users" }}
+        subParent={`Crear Usuario`}
+      />
       <Container fluid={true}>
         <UserForm onSubmit={onSubmit} title="Crear Usuario" />
       </Container>

@@ -1,67 +1,67 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Badge, Container } from "reactstrap";
+import { Container } from "reactstrap";
 import { useRouter } from "next/router";
 import CustomTableData from "@/components/Table/CustomTableData/CustomTableData";
 import useSWR, { mutate } from "swr";
 import { setQueryStringValue, textEllipsis } from "../../../../utils/utils";
 import { FormikHelpers } from "formik";
 import { toast } from "react-toastify";
-import { ICategory } from "../../../../Types/ICategory";
 import {
-  createCultivation,
-  getAllCultivation,
-  updateCultivation,
-} from "../../../../helper/api/crops";
-import { ICrop } from "../../../../Types/ICrop";
-import { getAllFertiliser } from "../../../../helper/api/fertilizer";
-import { IPlague } from "../../../../Types/IPlague";
-import { IFertilizer } from "../../../../Types/IFertilizer";
+  createFertiliser,
+  getAllFertiliser,
+  getOneFertiliser,
+  updateFertiliser,
+} from "../../../../helper/api/fertilizer";
+import ProtectionForm from "@/components/Protection/ProtectionForm";
+import FormModal from "@/components/FormModal";
+import { IProtection } from "../../../../Types/IProtection";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+
   const [action, setAction] = useState("create");
-  const [title, setTitle] = useState("Crear Rol");
+  const [title, setTitle] = useState("Crear fertilizante");
   const router = useRouter();
+  const [id, setId] = useState("");
 
   const page = router.query.page ? Number(router.query.page) : 1;
   const rowPerPage = router.query.rowPerPage
     ? Number(router.query.rowPerPage)
     : 10;
 
-  const [initData, setInitData] = useState<ICategory>({
-    _id: "",
-    active: false,
-    name: "",
-    image: "",
-    description: "",
-  });
-
   const fertiliser = useSWR([`/getAllFertiliser`, page, rowPerPage], () =>
     getAllFertiliser(page, rowPerPage),
   );
 
+  const selectedFertiliser = useSWR(id ? `/getOneFertiliser/${id}` : null, () =>
+    getOneFertiliser(id!.toString()),
+  );
+
   const columns = [
     {
-      name: "Plague",
-      selector: (row: IFertilizer) => `${row.name}`,
+      name: "Fertilizante",
+      selector: (row: IProtection) => `${row.name}`,
       sortable: true,
       center: false,
     },
     {
       name: "Descripción",
-      selector: (row: IFertilizer) => `${row.description}`,
+      selector: (row: IProtection) => `${textEllipsis(row.description, 60)}`,
       sortable: true,
       center: false,
     },
     {
       name: "Acción",
-      cell: (row: IFertilizer) => (
+      cell: (row: IProtection) => (
         <ul className="action">
           <li className="edit">
             <Link
               href="#"
-              onClick={() => handleOpenModal("edit", "Editar Rol", row)}
+              onClick={() =>
+                handleOpenModal("edit", "Editar fertilizante", row)
+              }
             >
               <i className="icon-pencil-alt" />
             </Link>
@@ -75,33 +75,61 @@ const Index = () => {
 
   const handleOpenModal = (
     action: string,
-    title = "Crear Fertilizante",
-    data: IFertilizer = {
+    title = "Crear fertilizante",
+    data: IProtection = {
       _id: "",
       name: "",
       description: "",
       image: "",
-      active: true,
     },
   ) => {
-    setIsOpen(true);
-    setInitData(data);
+    setId(data!._id as string);
+    if (action === "create") {
+      setIsOpen(true);
+    } else {
+      setIsOpenEdit(true);
+    }
     setAction(action);
     setTitle(title);
   };
-
   const onSubmit = async (
-    data: IFertilizer,
+    data: IProtection,
     {
       setErrors,
       setStatus,
       setSubmitting,
       resetForm,
-    }: FormikHelpers<IFertilizer>,
+    }: FormikHelpers<IProtection>,
   ) => {
+    if (action === "create") {
+      const response = await createFertiliser(data);
+      if (response.success) {
+        toast.success("Fertilizante creado correctamente");
+        setStatus({ success: true });
+        setSubmitting(false);
+        mutate([`/getAllFertiliser`, page, rowPerPage]);
+        setIsOpen(false);
+        resetForm();
+        return;
+      }
+    }
+
+    if (data._id) {
+      const response = await updateFertiliser(data!._id, data);
+      if (response.success) {
+        toast.success("Fertilizante actualizado correctamente");
+        setStatus({ success: true });
+        setSubmitting(false);
+        mutate([`/getAllFertiliser`, page, rowPerPage]);
+        mutate(`/getOneFertiliser/${data._id}`);
+        setIsOpenEdit(false);
+        resetForm();
+        return;
+      }
+    }
+
     setStatus({ success: true });
     setSubmitting(false);
-    // resetForm();
   };
 
   if (!fertiliser?.data?.data?.data) return null;
@@ -126,6 +154,20 @@ const Index = () => {
             setQueryStringValue("rowPerPage", currentRowsPerPage, router);
           }}
         />
+
+        <FormModal isOpen={isOpen} setIsOpen={setIsOpen}>
+          <ProtectionForm onSubmit={onSubmit} title={title} action={action} />
+        </FormModal>
+        {selectedFertiliser?.data?.data && (
+          <FormModal isOpen={isOpenEdit} setIsOpen={setIsOpenEdit}>
+            <ProtectionForm
+              onSubmit={onSubmit}
+              title={title}
+              data={selectedFertiliser?.data?.data}
+              action={action}
+            />
+          </FormModal>
+        )}
       </Container>
     </div>
   );

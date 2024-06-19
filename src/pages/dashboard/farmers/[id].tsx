@@ -1,12 +1,17 @@
 import React from "react";
-import { Container } from "reactstrap";
-import UserForm from "@/components/User/UserForm";
+import { Col, Container, Row } from "reactstrap";
 import { UserProps } from "../../../../Types/IUser";
 import { FormikHelpers } from "formik";
 import useSWR, { mutate } from "swr";
 import { getOneUser, updateUser } from "../../../../helper/api/users";
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
+import FarmerMain from "@/components/Farmer/FarmerMain";
+import FarmerCultives from "@/components/Farmer/FarmerCultives";
+import { getCultivesPerUser } from "../../../../helper/api/crops";
+import { IUserCrop } from "../../../../Types/IUserCrop";
+import Widgets1 from "../../../../CommonElements/Widgets1";
+import { WidgetsData4 } from "../../../../Data/Dashboard/DefaultData";
 
 const EditUser = () => {
   const router = useRouter();
@@ -14,42 +19,49 @@ const EditUser = () => {
   const user = useSWR(userId ? `/getUser/${userId}` : null, () =>
     getOneUser(userId!.toString()),
   );
-  const onSubmit = async (
-    data: UserProps,
-    {
-      setErrors,
-      setStatus,
-      setSubmitting,
-      resetForm,
-    }: FormikHelpers<UserProps>,
-  ) => {
-    const response = await updateUser(userId as string, data);
-    if (response.status === "success") {
-      toast.success("Usuario actualizado correctamente");
-      setStatus({ success: true });
-      setSubmitting(false);
-      mutate("/getAllUsers");
-      mutate(`/getUser/${userId}`);
-      router.push("/dashboard/users");
-      resetForm();
-      return;
-    }
-    setStatus({ success: false });
-    setSubmitting(false);
-  };
+  const crops = useSWR(userId ? `/user-cultivation/list/${userId}` : null, () =>
+    getCultivesPerUser(userId!.toString()),
+  );
 
-  if (!user?.data?.data) return null;
+  if (!user?.data?.data || !crops?.data?.data) return null;
+
+  const formattedCrop = crops?.data?.data?.map((crop: IUserCrop) => ({
+    ...crop,
+    name: crop.userCultivationName,
+  }));
 
   return (
     <div className="page-body">
+      <Breadcrumbs
+        mainTitle={"Huertista"}
+        parentElement={{ title: "Huertistas", url: "/dashboard/farmers" }}
+        subParent={`${user?.data?.data?.name} ${user?.data?.data?.lastName}`}
+      />
       <Container fluid={true}>
-        <UserForm
-          onSubmit={onSubmit}
-          data={user?.data?.data}
-          disabled={true}
-          title="Editar Usuario"
-          action="edit"
-        />
+        {/*<Row>*/}
+        {/*  <Col sm={12} md={6} lg={6}>*/}
+        {/*    <Widgets1*/}
+        {/*      data={{*/}
+        {/*        title: "Total de cultivos",*/}
+        {/*        total: formattedCrop.length,*/}
+        {/*        color: "warning",*/}
+        {/*        icon: "rate",*/}
+        {/*      }}*/}
+        {/*    />*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
+        <Row>
+          <Col xs={12} lg={6}>
+            <FarmerMain title="Información Personal" user={user?.data?.data} />
+          </Col>
+          <Col xs={12} lg={6}>
+            <Row>
+              <Col xs={12}>
+                <FarmerCultives crops={formattedCrop} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

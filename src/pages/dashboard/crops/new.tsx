@@ -1,13 +1,40 @@
 import React from "react";
 import { Container } from "reactstrap";
-import UserForm from "@/components/User/UserForm";
+import { FormikHelpers } from "formik";
+import { ICrop } from "../../../../Types/ICrop";
+import CropForm from "@/components/Crop/CropForm";
+import { createCultivation } from "../../../../helper/api/crops";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
+import { useRouter } from "next/router";
+import { initialCultiveData } from "../../../../utils/constants";
 
-const NewUser = () => {
+const NewCrop = () => {
+  const router = useRouter();
+  const onSubmit = async (
+    data: ICrop,
+    { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<ICrop>,
+  ) => {
+    const response = await createCultivation(data);
+    if (response.success) {
+      toast.success("Cultivo correctamente");
+      setStatus({ success: true });
+      setSubmitting(false);
+      mutate("/getAllCultivation");
+      router.push("/dashboard/crops");
+      // resetForm();
+      return;
+    }
+    setStatus({ success: false });
+    setSubmitting(false);
+  };
   return (
     <div className="page-body">
-      <Container fluid={true}>{/*<UserForm />*/}</Container>
+      <Container fluid={true}>
+        <CropForm onSubmit={onSubmit} title="Editar Cultivo" />
+      </Container>
     </div>
   );
 };
 
-export default NewUser;
+export default NewCrop;

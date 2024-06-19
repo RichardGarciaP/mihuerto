@@ -1,7 +1,10 @@
 import { getFetcher, patchFetcher, postFetcher } from "../api";
 import { getToken } from "../../utils/utils";
 import { ICrop } from "../../Types/ICrop";
-export const getAllCultivation = (page: number, rowPerPage: number) => {
+export const getAllCultivation = (
+  page: number = 1,
+  rowPerPage: number = 10,
+) => {
   return getFetcher(
     `/cultivation/getAllCultivation?page=${page}&limit=${rowPerPage}`,
     false,
@@ -11,6 +14,18 @@ export const getAllCultivation = (page: number, rowPerPage: number) => {
 
 export const getAllCultivationActive = () => {
   return getFetcher(`/cultivation/getAllCultivationActive`, false, getToken());
+};
+
+export const getOneCultivation = (id: string) => {
+  return getFetcher(
+    `/cultivation/getOneCultivation?id=${id}`,
+    false,
+    getToken(),
+  );
+};
+
+export const getOneCrop = (id: string) => {
+  return getFetcher(`/cultivation/getOneCrop?id=${id}`, false, getToken());
 };
 
 export const createCultivation = (data: ICrop) => {
@@ -24,4 +39,8 @@ export const updateCultivation = (id: string, data: ICrop) => {
     data,
     getToken(),
   );
+};
+
+export const getCultivesPerUser = (id: string) => {
+  return getFetcher(`/user-cultivation/list/${id}`, false, getToken());
 };

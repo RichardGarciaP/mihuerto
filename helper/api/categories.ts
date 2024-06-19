@@ -9,14 +9,13 @@ export const getAllCategory = (page: number, rowPerPage: number) => {
   );
 };
 
+export const getAllCategoryActive = () => {
+  return getFetcher(`/category/getAllCategory?active=true`, false, getToken());
+};
+
 export const getOneCategory = (id: string) => {
   return getFetcher(`/category/getOneCategory?id=${id}`, false, getToken());
 };
-
-export const getActiveCategories = () => {
-  return getFetcher(`/category/getAllCategoryActive`, false, getToken());
-};
-
 export const createCategory = (data: IRol) => {
   delete data._id;
   return postFetcher(`/category/createCategory`, data, getToken());

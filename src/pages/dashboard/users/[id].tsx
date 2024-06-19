@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { getOneUser, updateUser } from "../../../../helper/api/users";
 import { toast } from "react-toastify";
+import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
 
 const EditUser = () => {
   const router = useRouter();
@@ -47,6 +48,11 @@ const EditUser = () => {
 
   return (
     <div className="page-body">
+      <Breadcrumbs
+        mainTitle={"Users"}
+        parentElement={{ title: "Users", url: "/dashboard/users" }}
+        subParent={`Editar Usuario`}
+      />
       <Container fluid={true}>
         <UserForm
           onSubmit={onSubmit}

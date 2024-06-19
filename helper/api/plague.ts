@@ -1,6 +1,6 @@
 import { getFetcher, patchFetcher, postFetcher } from "../api";
 import { getToken } from "../../utils/utils";
-import { IRol } from "../../Types/IRol";
+import { IProtection } from "../../Types/IProtection";
 
 export const getAllPlague = (page: number = 1, rowPerPage: number = 10) => {
   return getFetcher(
@@ -10,15 +10,15 @@ export const getAllPlague = (page: number = 1, rowPerPage: number = 10) => {
   );
 };
 
-export const getActiveRoles = () => {
-  return getFetcher(`/role/getRolesActives`, false, getToken());
+export const getOnePlague = (id: string) => {
+  return getFetcher(`/plague/getOnePlague?id=${id}`, false, getToken());
 };
 
-export const createRole = (data: IRol) => {
+export const createPlague = (data: IProtection) => {
   delete data._id;
-  return postFetcher(`/role/createRole`, data, getToken());
+  return postFetcher(`/plague/createPlague`, data, getToken());
 };
 
-export const updateRole = (id: string, data: IRol) => {
-  return patchFetcher(`/role/editRole?id=${id}`, data, getToken());
+export const updatePlague = (id: string, data: IProtection) => {
+  return patchFetcher(`/plague/editPlague?id=${id}`, data, getToken());
 };

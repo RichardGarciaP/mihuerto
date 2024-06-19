@@ -58,3 +58,7 @@ export const textEllipsis = (
   }
   return str;
 };
+
+export const validIfIsBase64 = (image: string) => {
+  return image.includes("data:image/");
+};
