@@ -33,3 +33,7 @@ export const createUser = (data: UserProps) => {
 export const updateUser = (id: string, data: UserProps) => {
   return patchFetcher(`/user/editState?id=${id}`, data, getToken());
 };
+
+export const getDashboardData = () => {
+  return getFetcher(`/user/dashboard`, false, getToken());
+};
