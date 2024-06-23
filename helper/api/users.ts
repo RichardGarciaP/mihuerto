@@ -10,7 +10,7 @@ export const getUsersPortal = (page: number, rowPerPage: number) => {
   );
 };
 
-export const getUsersApp = (page: number, rowPerPage: number) => {
+export const getUsersApp = (page: number = 1, rowPerPage: number = 10) => {
   return getFetcher(
     `/user/getAllUsers?page=${page}&limit=${rowPerPage}&isMovil=true`,
     false,

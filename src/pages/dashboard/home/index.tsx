@@ -37,7 +37,7 @@ const Index = () => {
                 title: "Total de Administradores",
                 total: dashboardData.totalUsers,
                 color: "warning",
-                icon: <FaUser className="secondary" />,
+                icon: <FaUser className="secondary" color="#FFAA05" />,
               }}
             />
           </Col>
@@ -47,7 +47,7 @@ const Index = () => {
                 title: "Total de Huertistas",
                 total: dashboardData.totalUserCultivations,
                 color: "primary",
-                icon: <FaUserGroup />,
+                icon: <FaUserGroup color="#184A2C" />,
               }}
             />
           </Col>
@@ -57,7 +57,7 @@ const Index = () => {
                 title: "Total de Roles",
                 total: dashboardData.totalRoles,
                 color: "secondary",
-                icon: <FaBahai />,
+                icon: <FaBahai color="#f73164" />,
               }}
             />
           </Col>
@@ -67,7 +67,7 @@ const Index = () => {
                 title: "Total de Categorias",
                 total: dashboardData.totalCategories,
                 color: "warning",
-                icon: <FaTableList />,
+                icon: <FaTableList color="#FFAA05" />,
               }}
             />
           </Col>
@@ -77,7 +77,7 @@ const Index = () => {
                 title: "Total de Cultivos",
                 total: dashboardData.totalCultivations,
                 color: "primary",
-                icon: <FaSunPlantWilt />,
+                icon: <FaSunPlantWilt color="#184A2C" />,
               }}
             />
           </Col>
@@ -87,7 +87,7 @@ const Index = () => {
                 title: "Total de Fertilizantes",
                 total: dashboardData.totalFertilisers,
                 color: "success",
-                icon: <GiFertilizerBag />,
+                icon: <GiFertilizerBag color="#54BA4A" />,
               }}
             />
           </Col>
@@ -97,7 +97,7 @@ const Index = () => {
                 title: "Total de Fertilizantes Organicos",
                 total: dashboardData.totalPlagues,
                 color: "success",
-                icon: <GiFertilizerBag />,
+                icon: <GiFertilizerBag color="#54BA4A" />,
               }}
             />
           </Col>
@@ -107,7 +107,7 @@ const Index = () => {
                 title: "Total de Plagas",
                 total: dashboardData.totalReproductions,
                 color: "secondary",
-                icon: <FaBug />,
+                icon: <FaBug color="#f73164" />,
               }}
             />
           </Col>
@@ -115,9 +115,9 @@ const Index = () => {
             <WidgetsStatistic
               data={{
                 title: "Total de Metodos de Reproducción",
-                total: dashboardData.totalOrganicFertilisers,
+                total: dashboardData.totalReproductions,
                 color: "success",
-                icon: <FaSeedling />,
+                icon: <FaSeedling color="#54BA4A" />,
               }}
             />
           </Col>

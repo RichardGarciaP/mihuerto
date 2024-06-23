@@ -7,12 +7,6 @@ import useSWR, { mutate } from "swr";
 import { setQueryStringValue, textEllipsis } from "../../../../utils/utils";
 import { FormikHelpers } from "formik";
 import { toast } from "react-toastify";
-import {
-  createFertiliser,
-  getAllFertiliser,
-  getOneFertiliser,
-  updateFertiliser,
-} from "../../../../helper/api/fertilizer";
 import ProtectionForm from "@/components/Protection/ProtectionForm";
 import FormModal from "@/components/FormModal";
 import { IProtection } from "../../../../Types/IProtection";
