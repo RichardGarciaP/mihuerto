@@ -43,13 +43,13 @@ const UserForm = ({
   action = "create",
   disabled = false,
 }: UserFormProps) => {
-  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
+  const { showLoadingModal, hideLoadingModal } = useContext(layoutContext);
 
   const roles = useSWR(`/getRolesActives`, () => {
-    showLoadingModal()
-    const activeRoles = getActiveRoles()
-    hideLoadingModal()
-    return activeRoles
+    showLoadingModal();
+    const activeRoles = getActiveRoles();
+    hideLoadingModal();
+    return activeRoles;
   });
 
   const validations = Yup.object().shape({
@@ -166,7 +166,7 @@ const UserForm = ({
                   <ErrorMessage name="lastName" component={FormFeedback} />
                 </Col>
                 <Col xs={6}>
-                  <Label for="username">{LastName}</Label>
+                  <Label for="username">Nombre de Usuario</Label>
                   <Field
                     name="username"
                     as={Input}
