@@ -28,9 +28,11 @@ const Profile = () => {
           height={35}
         />
         <div className="media-body">
-          <span>Test</span>
+          <span>
+            {user?.name} {user?.lastName}
+          </span>
           <p className="mb-0 font-roboto">
-            {Admin} <i className="middle fa fa-angle-down" />
+            {user?.idRole?.name} <i className="middle fa fa-angle-down" />
           </p>
         </div>
       </div>

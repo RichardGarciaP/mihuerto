@@ -14,18 +14,18 @@ import { postLogin } from "../../../../helper/api/login";
 import { UserContext } from "../../../../helper/User";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import layoutContext from "helper/Layout";
 
 const Login = () => {
   const { login } = useContext(UserContext);
-  const {showLoadingModal,hideLoadingModal} = useContext(layoutContext)
+  const { showLoadingModal, hideLoadingModal } = useContext(layoutContext);
   const router = useRouter();
 
   const [showPassWord, setShowPassWord] = useState(false);
   const [formValues, setFormValues] = useState({
     username: "maxrd",
-    password: "Riden",
+    password: "12345678",
   });
   const [error, setError] = useState("");
 
@@ -40,21 +40,35 @@ const Login = () => {
     setLoading(true);
     showLoadingModal();
     postLogin({ username, password }).then((response) => {
+      console.log(response?.data);
       const userData = response?.data?.user;
       const token = response?.data?.token;
       setLoading(false);
-      hideLoadingModal()
+      hideLoadingModal();
 
       if (response.status === "error") {
         setError(response.message);
       }
-      if (response.status === "success") {
-        Cookies.set("token", token);
 
-        router.push("/dashboard/home");
-        toast.success("Sesión iniciada correctamente");
-        login(userData, token);
+      if (response.status === "success") {
+        if (response.data.user.idRole.name === "app") {
+          toast.error("Usuario no autorizado");
+          return;
+        }
+
+        if (
+          userData?.idRole.name === "creador" ||
+          userData?.idRole.name === "admin" ||
+          userData?.idRole?.name === "informe"
+        ) {
+          Cookies.set("token", token);
+          login(userData, token);
+          router.push("/dashboard/home");
+          toast.success("Sesión iniciada correctamente");
+          return;
+        }
       }
+      router.push("/");
     });
   };
 

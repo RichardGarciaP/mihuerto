@@ -37,3 +37,7 @@ export const updateUser = (id: string, data: UserProps) => {
 export const getDashboardData = () => {
   return getFetcher(`/user/dashboard`, false, getToken());
 };
+
+export const getMe = () => {
+  return getFetcher(`/user/me`, false, getToken());
+};

@@ -10,7 +10,7 @@ export const postFetcher = (
 ) => {
   return axios
     .post(`${process.env.API_URL}${url}`, data, {
-      headers: { "x-api-key": `${token}` },
+      headers: { authorization: `Bearer ${token}` },
     })
     .then((res) => res?.data)
     .catch((e) => {
@@ -21,7 +21,7 @@ export const postFetcher = (
 export const patchFetcher = (url: string, data: any, token?: string) => {
   return axios
     .patch(`${process.env.API_URL}${url}`, data, {
-      headers: { "x-api-key": `${token}` },
+      headers: { authorization: `Bearer ${token}` },
     })
     .then((res) => res.data)
     .catch((e) => {
@@ -37,7 +37,7 @@ export const getFetcher = (
 ) => {
   return axios
     .get(`${process.env.API_URL}${url}`, {
-      headers: { "x-api-key": `${token}` },
+      headers: { authorization: `Bearer ${token}` },
     })
     .then((res) => (addLevel ? res.data?.data : res.data))
     .catch((e) => {

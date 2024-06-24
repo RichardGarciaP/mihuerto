@@ -1,9 +1,10 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { initialUserState, UserContext } from "./index";
 import { User } from "../../Types/Types";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { getMe } from "../api/users";
 
 interface contextType {
   children: ReactNode;
@@ -13,12 +14,7 @@ const UserProvider = ({ children }: contextType) => {
   const router = useRouter();
 
   const login = (user: User, token: string) => {
-    console.log("Llega aqui");
-    console.log(user);
-    if (user?.idRole.name === "creador" || user?.idRole.name === "admin") {
-      setUser(user);
-    }
-    router.push("/");
+    setUser(user);
   };
 
   const logout = () => {
@@ -40,6 +36,15 @@ const UserProvider = ({ children }: contextType) => {
     login,
     logout,
   };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      getMe().then((res) => {
+        setUser(res?.data);
+      });
+    }
+  }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

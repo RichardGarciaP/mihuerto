@@ -25,6 +25,8 @@ export interface User {
   username: string;
   password: string;
   idRole: Role;
+  name?: string;
+  lastName?: string;
 }
 
 export interface Role {
