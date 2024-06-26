@@ -20,6 +20,7 @@ export const MenuList: sidebarMenuType[] = [
         type: "link",
         badge: "badge badge-light-primary",
         path: "/dashboard/home",
+        role: ["all"],
         badgetxt: "8",
       },
       {
@@ -30,6 +31,7 @@ export const MenuList: sidebarMenuType[] = [
         type: "sub",
         badge: "badge badge-light-primary",
         badgetxt: "8",
+        role: ["admin"],
         children: [
           {
             path: "/dashboard/users",
@@ -52,6 +54,7 @@ export const MenuList: sidebarMenuType[] = [
         type: "sub",
         badge: "badge badge-light-primary",
         badgetxt: "8",
+        role: ["creador"],
         children: [
           { path: "/dashboard/categories", title: "Categorias", type: "link" },
           { path: "/dashboard/crops", title: "Cultivos", type: "link" },
@@ -65,6 +68,7 @@ export const MenuList: sidebarMenuType[] = [
         type: "sub",
         badge: "badge badge-light-primary",
         badgetxt: "8",
+        role: ["creador"],
         children: [
           { path: "/dashboard/plagues", title: "Plagas", type: "link" },
           {
@@ -88,6 +92,7 @@ export const MenuList: sidebarMenuType[] = [
         badge: "badge badge-light-primary",
         badgetxt: "8",
         path: "/dashboard/reports",
+        role: ["informe"],
         children: [
           {
             path: "/dashboard/reports/admins",

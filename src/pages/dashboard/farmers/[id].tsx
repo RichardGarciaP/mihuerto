@@ -30,6 +30,8 @@ const EditUser = () => {
     name: crop.userCultivationName,
   }));
 
+  console.log(formattedCrop);
+
   return (
     <div className="page-body">
       <Breadcrumbs

@@ -52,7 +52,7 @@ const Admins = () => {
     {
       name: "Fecha de Creación",
       selector: (row: IAdmin) =>
-        `${format(new Date(row.createdAt), "dd-MM-yyyy")}`,
+        `${format(new Date(row.updatedAt), "dd-MM-yyyy")}`,
       sortable: true,
       center: false,
     },

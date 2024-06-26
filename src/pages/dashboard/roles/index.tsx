@@ -98,7 +98,7 @@ const Index = () => {
     console.log(data);
     if (action === "create") {
       const response = await createRole(data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Rol creado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
@@ -111,7 +111,7 @@ const Index = () => {
 
     if (data._id) {
       const response = await updateRole(data!._id, data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Rol actualizado correctamente");
         setStatus({ success: true });
         setSubmitting(false);

@@ -105,7 +105,8 @@ const Index = () => {
   ) => {
     if (action === "create") {
       const response = await createReproduction(data);
-      if (response.status === "success") {
+      console.log(response);
+      if (response.success) {
         toast.success("Método de reproducción creado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
@@ -114,11 +115,12 @@ const Index = () => {
         resetForm();
         return;
       }
+      toast.error("Error al crear el metodo de reproducción");
     }
 
     if (data._id) {
       const response = await editReproduction(data!._id, data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Método de reproducción actualizado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
@@ -128,6 +130,7 @@ const Index = () => {
         resetForm();
         return;
       }
+      toast.error("Error al actualizar el metodo de reproducción");
     }
 
     setStatus({ success: true });

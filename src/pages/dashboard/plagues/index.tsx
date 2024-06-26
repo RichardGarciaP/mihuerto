@@ -101,7 +101,7 @@ const Index = () => {
   ) => {
     if (action === "create") {
       const response = await createPlague(data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Plaga creada correctamente");
         setStatus({ success: true });
         setSubmitting(false);
@@ -114,7 +114,7 @@ const Index = () => {
 
     if (data._id) {
       const response = await updatePlague(data!._id, data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Plaga actualizada correctamente");
         setStatus({ success: true });
         setSubmitting(false);

@@ -49,6 +49,8 @@ const FarmerCultives = ({ crops }: FarmerCultives) => {
       width: "170px",
     },
   ];
+
+  console.log("Crops", crops);
   return (
     <Card className="height-equal p-0">
       <CardBody className="p-0">

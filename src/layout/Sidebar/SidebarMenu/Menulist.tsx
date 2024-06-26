@@ -4,6 +4,7 @@ import layoutContext from "helper/Layout";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../../helper/User";
 
 type menuListType = {
   MENUITEMS: sidebarItemType[];
@@ -28,6 +29,12 @@ const Menulist = ({
   const router = useRouter();
   const { layoutName } = useContext(CustomizerContext);
   const { t } = useTranslation();
+  const { user } = useContext(UserContext);
+
+  const existRole = (item: sidebarItemType, idRole: string) => {
+    console.log(item.role);
+    return item.role?.includes(idRole);
+  };
 
   return (
     <>

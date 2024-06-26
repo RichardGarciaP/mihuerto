@@ -141,7 +141,7 @@ const Index = () => {
 
     if (data._id) {
       const response = await updateCategory(data!._id, data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Categoria actualizada correctamente");
         setStatus({ success: true });
         setSubmitting(false);

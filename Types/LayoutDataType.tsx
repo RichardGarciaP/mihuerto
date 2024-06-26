@@ -24,6 +24,7 @@ export type sidebarItemType = {
   path?: string;
   bookmark?: boolean;
   children?: sidebarChildrenType[];
+  role?: string[];
 };
 export type sidebarItemTypes = {
   item: sidebarItemType;

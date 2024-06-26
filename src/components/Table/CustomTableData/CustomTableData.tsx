@@ -32,7 +32,7 @@ const CustomTableData = ({
   columns,
   subHeader = true,
   hasPadding = true,
-  filterData,
+  filterData = [],
   ...otherProps
 }: CustomTableProps) => {
   const router = useRouter();
@@ -62,7 +62,6 @@ const CustomTableData = ({
     );
   }, [filterText, filterData]);
 
-  console.log(data, filteredItems);
   const renderBody = () => {
     return (
       <>

@@ -47,7 +47,7 @@ const CustomTypehead = ({
         id={field.name}
         labelKey="name"
         defaultSelected={
-          field.value && field.value[0]._id && field.value[0].name
+          field.value && field.value[0]?._id && field.value[0]?.name
             ? field.value
             : undefined
         }
