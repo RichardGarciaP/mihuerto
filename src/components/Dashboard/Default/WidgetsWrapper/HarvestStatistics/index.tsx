@@ -10,15 +10,15 @@ import {
 const HarvestStatistics = () => {
   return (
     <>
-      <Col sm={12} md={6} lg={4}>
-        <Widgets1 data={WidgetsData} />
-      </Col>
-      <Col sm={12} md={6} lg={4}>
-        <Widgets1 data={WidgetsData2} />
-      </Col>
-      <Col sm={12} md={6} lg={4}>
-        <Widgets1 data={WidgetsData4} />
-      </Col>
+      {/*<Col sm={12} md={6} lg={4}>*/}
+      {/*  <Widgets1 data={WidgetsData} />*/}
+      {/*</Col>*/}
+      {/*<Col sm={12} md={6} lg={4}>*/}
+      {/*  <Widgets1 data={WidgetsData2} />*/}
+      {/*</Col>*/}
+      {/*<Col sm={12} md={6} lg={4}>*/}
+      {/*  <Widgets1 data={WidgetsData4} />*/}
+      {/*</Col>*/}
     </>
   );
 };

@@ -13,7 +13,7 @@ type modalDataType = {
   size?: string;
   bodyClass?: string;
   button?: string;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 type propsTypes = {

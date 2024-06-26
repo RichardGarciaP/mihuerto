@@ -24,11 +24,11 @@ const FormModal = ({ isOpen, setIsOpen, children }: FormModalProps) => {
   const ModalData = {
     isOpen: isOpen,
     header: false,
+    onClose: () => {},
     class: "modal-lg",
     toggler: toggle,
     title: "Large modal",
     size: "fullscreen",
-    onClose: onClose,
   };
   return (
     <CommonModal modalData={ModalData}>
