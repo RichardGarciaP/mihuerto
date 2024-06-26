@@ -6,6 +6,11 @@ const nextConfig = {
         hostname: "localhost",
         port: "3005",
       },
+      {
+        protocol: "http",
+        hostname: "149.28.62.214",
+        port: "3005",
+      },
     ],
   },
   env: {
