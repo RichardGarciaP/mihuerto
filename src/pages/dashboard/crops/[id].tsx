@@ -24,7 +24,7 @@ const EditCrop = () => {
     { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<ICrop>,
   ) => {
     if (!cultiveId) return;
-
+    setSubmitting(true);
     const response = await updateCultivation(cultiveId as string, data);
     if (response.status === "success") {
       toast.success("Cultivo actualizado correctamente");

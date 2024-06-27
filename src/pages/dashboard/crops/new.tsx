@@ -15,6 +15,7 @@ const NewCrop = () => {
     data: ICrop,
     { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<ICrop>,
   ) => {
+    setSubmitting(true);
     const response = await createCultivation(data);
     if (response.success) {
       toast.success("Cultivo correctamente");

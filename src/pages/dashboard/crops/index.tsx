@@ -142,6 +142,7 @@ const Index = () => {
     data: ICrop,
     { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<ICrop>,
   ) => {
+    setSubmitting(true);
     if (action === "create") {
       const response = await createCultivation(data);
       if (response.status === "success") {

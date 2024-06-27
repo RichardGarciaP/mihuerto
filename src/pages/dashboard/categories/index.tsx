@@ -126,9 +126,10 @@ const Index = () => {
       resetForm,
     }: FormikHelpers<ICategory>,
   ) => {
+    setSubmitting(true);
     if (action === "create") {
       const response = await createCategory(data);
-      if (response.status === "success") {
+      if (response.success) {
         toast.success("Categoria creada correctamente");
         setStatus({ success: true });
         setSubmitting(false);

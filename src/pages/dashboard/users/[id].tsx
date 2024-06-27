@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "reactstrap";
 import UserForm from "@/components/User/UserForm";
 import { UserProps } from "../../../../Types/IUser";
@@ -13,6 +13,7 @@ import Breadcrumbs from "../../../../CommonElements/Breadcrumbs";
 const EditUser = () => {
   const router = useRouter();
   const userId = router?.query?.id;
+  const [isLoading, setIsLoading] = useState();
 
   const user = useSWR(userId ? `/getUser/${userId}` : null, () =>
     getOneUser(userId!.toString()),
@@ -28,6 +29,7 @@ const EditUser = () => {
     }: FormikHelpers<UserProps>,
   ) => {
     if (!userId) return;
+    setSubmitting(true);
 
     const response = await updateUser(userId as string, data);
     if (response.status === "success") {

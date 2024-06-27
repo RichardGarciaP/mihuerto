@@ -34,6 +34,7 @@ interface UserFormProps {
   title: string;
   action?: string;
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 const UserForm = ({
@@ -42,6 +43,7 @@ const UserForm = ({
   title,
   action = "create",
   disabled = false,
+  isLoading = false,
 }: UserFormProps) => {
   const { showLoadingModal, hideLoadingModal } = useContext(layoutContext);
 
@@ -323,7 +325,7 @@ const UserForm = ({
                     <Button
                       color="primary"
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || isLoading}
                     >
                       {SubmitForm}
                     </Button>

@@ -145,10 +145,8 @@ const ProtectionForm = ({
                     {SubmitForm}
                   </Button>
                 </Col>
-
                 <Col xs={12}>
-                  <p>{action}</p>
-                  {/*<p>{JSON.stringify(props, null, 2)}</p>*/}
+                  <p>{JSON.stringify(isSubmitting)}</p>
                 </Col>
               </form>
             );

@@ -99,6 +99,7 @@ const Index = () => {
       resetForm,
     }: FormikHelpers<IProtection>,
   ) => {
+    setSubmitting(true);
     if (action === "create") {
       const response = await createPlague(data);
       if (response.success) {

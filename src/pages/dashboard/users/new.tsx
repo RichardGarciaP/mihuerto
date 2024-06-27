@@ -20,6 +20,7 @@ const NewUser = () => {
       resetForm,
     }: FormikHelpers<UserProps>,
   ) => {
+    setSubmitting(true);
     const response = await createUser(data);
     if (response.status === "success") {
       toast.success("Usuario creado correctamente");

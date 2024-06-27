@@ -103,9 +103,9 @@ const Index = () => {
       resetForm,
     }: FormikHelpers<IProtection>,
   ) => {
+    setSubmitting(true);
     if (action === "create") {
       const response = await createReproduction(data);
-      console.log(response);
       if (response.success) {
         toast.success("Método de reproducción creado correctamente");
         setStatus({ success: true });

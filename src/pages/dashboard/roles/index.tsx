@@ -95,10 +95,10 @@ const Index = () => {
     data: IRol,
     { setErrors, setStatus, setSubmitting, resetForm }: FormikHelpers<IRol>,
   ) => {
-    console.log(data);
+    setSubmitting(true);
     if (action === "create") {
       const response = await createRole(data);
-      if (response.success) {
+      if (response.status === "success") {
         toast.success("Rol creado correctamente");
         setStatus({ success: true });
         setSubmitting(false);
@@ -111,7 +111,7 @@ const Index = () => {
 
     if (data._id) {
       const response = await updateRole(data!._id, data);
-      if (response.success) {
+      if (response.status === "success") {
         toast.success("Rol actualizado correctamente");
         setStatus({ success: true });
         setSubmitting(false);

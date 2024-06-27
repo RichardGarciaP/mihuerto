@@ -101,6 +101,7 @@ const Index = () => {
       resetForm,
     }: FormikHelpers<IProtection>,
   ) => {
+    setSubmitting(true);
     if (action === "create") {
       const response = await createFertiliser(data);
       if (response.success) {

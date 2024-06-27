@@ -30,7 +30,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const { username, password } = formValues;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleUserValue = (event: ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
@@ -43,8 +43,6 @@ const Login = () => {
       console.log(response?.data);
       const userData = response?.data?.user;
       const token = response?.data?.token;
-      setLoading(false);
-      hideLoadingModal();
 
       if (response.status === "error") {
         setError(response.message);
@@ -64,10 +62,12 @@ const Login = () => {
           Cookies.set("token", token);
           login(userData, token);
           router.push("/dashboard/home");
+          setLoading(false);
           toast.success("Sesión iniciada correctamente");
           return;
         }
       }
+      setLoading(false);
       router.push("/");
     });
   };
@@ -125,6 +125,7 @@ const Login = () => {
                         color="primary"
                         className="btn-block w-100"
                         type="submit"
+                        disabled={loading}
                       >
                         {SignIn}
                       </Button>
